@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Gallery - LensCraft Photography</title>
+    <meta name="description" content="Explore the instant print portfolio of LensCraft Photography.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .page-header {
+            padding: 150px 0 80px;
+            background-color: var(--bg-darker);
+            text-align: center;
+        }
+
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+        }
+
+        /* Update Masonry to support scattered polaroids */
+        .masonry {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .masonry .portfolio-item {
+            margin-bottom: 20px;
+            display: inline-block;
+            cursor: pointer;
+            /* Using CSS variables to randomize rotation sligtly */
+            --rotation: calc((var(--rand) * 10deg) - 5deg);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--gold);
+        }
+
+        /* Inner styling for gallery polaroids */
+        .polaroid-frame .caption {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-top: 15px;
+            color: #000;
+        }
+
+        .polaroid-frame img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .polaroid-frame.wide img {
+            width: 350px;
+            height: 250px;
+        }
+
+        .polaroid-frame.tall img {
+            width: 250px;
+            height: 350px;
+        }
+
+        @media (max-width: 768px) {
+            .polaroid-frame img {
+                width: 200px;
+                height: 200px;
+            }
+
+            .polaroid-frame.wide img {
+                width: 280px;
+                height: 200px;
+            }
+
+            .polaroid-frame.tall img {
+                width: 200px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">LensCraft<span>.</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="portfolio.html" class="active">Portfolio</a>
+                <a href="services.html">Services</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="booking.html" class="btn btn-outline">Book Now</a>
+            </div>
+            <div class="mobile-menu-btn" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html" class="active">Portfolio</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="booking.html" class="btn btn-primary">Book Now</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container fade-up">
+            <h1>The Instant Gallery</h1>
+            <div class="divider"></div>
+            <p>Physical memories from our latest events</p>
+        </div>
+    </header>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio-section section">
+        <div class="container">
+            <!-- Filters -->
+            <div class="portfolio-filters fade-in">
+                <button class="filter-btn active" data-filter="all">All Prints</button>
+                <button class="filter-btn" data-filter="guestbook">Guestbooks</button>
+                <button class="filter-btn" data-filter="live">Live Stations</button>
+                <button class="filter-btn" data-filter="roaming">Roaming Candids</button>
+            </div>
+
+            <!-- Gallery -->
+            <div class="masonry fade-up delay-1" id="portfolio-gallery">
+                <!-- Guestbook -->
+                <div class="portfolio-item" data-category="guestbook" style="--rand: 0.8">
+                    <div class="polaroid-frame tall">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop"
+                            alt="Guestbook 1" class="lazy">
+                        <div class="caption">The First Dance</div>
+                    </div>
+                </div>
+                <!-- Live -->
+                <div class="portfolio-item" data-category="live" style="--rand: 0.2">
+                    <div class="polaroid-frame wide">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop"
+                            alt="Live 1" class="lazy">
+                        <div class="caption">Studio Session</div>
+                    </div>
+                </div>
+                <!-- Roaming -->
+                <div class="portfolio-item" data-category="roaming" style="--rand: 0.9">
+                    <div class="polaroid-frame">
+                        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800&auto=format&fit=crop"
+                            alt="Roaming 1" class="lazy">
+                        <div class="caption">Into the wild</div>
+                    </div>
+                </div>
+                <!-- Live -->
+                <div class="portfolio-item" data-category="live" style="--rand: 0.1">
+                    <div class="polaroid-frame wide">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop"
+                            alt="Live 2" class="lazy">
+                        <div class="caption">Gala Night</div>
+                    </div>
+                </div>
+                <!-- Guestbook -->
+                <div class="portfolio-item" data-category="guestbook" style="--rand: 0.7">
+                    <div class="polaroid-frame tall">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop"
+                            alt="Guestbook 2" class="lazy">
+                        <div class="caption">The Vows</div>
+                    </div>
+                </div>
+                <!-- Roaming -->
+                <div class="portfolio-item" data-category="roaming" style="--rand: 0.4">
+                    <div class="polaroid-frame">
+                        <img src="https://images.unsplash.com/photo-1563450989396-e24dc03cb35d?q=80&w=800&auto=format&fit=crop"
+                            alt="Roaming 2" class="lazy">
+                        <div class="caption">Caught reading</div>
+                    </div>
+                </div>
+                <!-- Roaming -->
+                <div class="portfolio-item" data-category="roaming" style="--rand: 0.6">
+                    <div class="polaroid-frame">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop"
+                            alt="Roaming 3" class="lazy">
+                        <div class="caption">Candid smile</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5 fade-in">
+                <a href="booking.html" class="btn btn-primary">Book Your Event</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content polaroid-frame" style="transform: none; padding: 20px 20px 80px 20px;">
+            <span class="lightbox-close" id="lightbox-close">&times;</span>
+            <img src="" alt="Fullscreen Image" class="lightbox-img" id="lightbox-img">
+            <div class="caption" id="lightbox-caption"
+                style="font-family: var(--font-heading); font-style: italic; font-size: 1.5rem; text-align: center; margin-top: 25px; color: #000;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">LensCraft<span>.</span></a>
+                    <p>Tangible memories delivered before the night is over.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="services.html">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="booking.html">Book Session</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Get In Touch</h4>
+                    <p>hello@lenscraft.com</p>
+                    <p>+1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#">IG</a>
+                        <a href="#">FB</a>
+                        <a href="#">TW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 LensCraft Photography. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Filtering Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.portfolio-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active class
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Filter items
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    galleryItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'inline-block';
+                            setTimeout(() => { item.style.opacity = '1'; }, 50);
+                        } else {
+                            item.style.opacity = '0';
+                            setTimeout(() => { item.style.display = 'none'; }, 300);
+                        }
+                    });
+                });
+            });
+
+            // Lightbox Logic for Polaroids
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const img = item.querySelector('img');
+                    const cap = item.querySelector('.caption').innerText;
+
+                    // Maintain aspect ratio logic
+                    lightboxImg.style.width = 'auto';
+                    lightboxImg.style.height = '70vh';
+
+                    if (item.querySelector('.polaroid-frame').classList.contains('wide')) {
+                        lightboxImg.style.width = '70vw';
+                        lightboxImg.style.height = 'auto';
+                        lightboxImg.style.maxHeight = '70vh';
+                    }
+
+                    lightboxImg.src = img.src;
+                    lightboxCaption.innerText = cap;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Print Packages - LensCraft Photography</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .page-header {
+            padding: 150px 0 80px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(13, 13, 13, 1)), url('https://images.unsplash.com/photo-1520114002871-0428ab240cf1?q=80&w=1500&auto=format&fit=crop') center/cover;
+            text-align: center;
+        }
+
+        .service-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 120px;
+        }
+
+        .service-row:nth-child(even) .service-content {
+            order: -1;
+        }
+
+        .service-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .service-price {
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            background-color: var(--gold);
+            color: #000;
+            padding: 15px 30px;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            z-index: 20;
+        }
+
+        .service-row:nth-child(even) .service-price {
+            right: auto;
+            left: 0;
+        }
+
+        .service-content h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+
+        .service-features {
+            margin: 20px 0 30px;
+        }
+
+        .service-features li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .service-row {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin-bottom: 80px;
+            }
+
+            .service-row:nth-child(even) .service-content {
+                order: 0;
+            }
+
+            .service-price {
+                bottom: -20px;
+                right: 20px;
+            }
+
+            .service-row:nth-child(even) .service-price {
+                left: auto;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">LensCraft<span>.</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="services.html" class="active">Services</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="booking.html" class="btn btn-outline">Book Now</a>
+            </div>
+            <div class="mobile-menu-btn" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="services.html" class="active">Services</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="booking.html" class="btn btn-primary">Book Now</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container fade-up">
+            <h1>Print Packages</h1>
+            <div class="divider"></div>
+            <p>Tailored physical experiences designed for your events.</p>
+        </div>
+    </header>
+
+    <!-- Services Details -->
+    <section class="services-detail section">
+        <div class="container">
+
+            <!-- Service 1 -->
+            <div class="service-row fade-up">
+                <div class="service-image" style="--rotation: -3deg;">
+                    <div class="polaroid-frame" style="max-width: 400px;">
+                        <img src="https://images.unsplash.com/photo-1520114002871-0428ab240cf1?q=80&w=800&auto=format&fit=crop"
+                            alt="Roaming Polaroid" style="aspect-ratio: 1/1;">
+                        <div
+                            style="font-family: var(--font-heading); font-style: italic; font-size: 1.2rem; text-align: center; margin-top: 15px; color:#000;">
+                            Roaming Action</div>
+                    </div>
+                    <div class="service-price">Starting from $800</div>
+                </div>
+                <div class="service-content">
+                    <h3>The Polaroid Experience</h3>
+                    <p>Our roaming photographers mingle with your guests carrying premium vintage and modern instant
+                        cameras. We capture candid, authentic moments and hand the physical prints directly to your
+                        guests on the spot.</p>
+                    <ul class="service-features">
+                        <li>Up to 4 hours of roaming coverage</li>
+                        <li>150 included premium instant film shots</li>
+                        <li>Custom branded polaroid sleeves</li>
+                        <li>Optional guestbook station setup</li>
+                        <li>Digital backups of all polaroids</li>
+                    </ul>
+                    <a href="booking.html" class="btn btn-primary">Book Polaroid Roaming</a>
+                </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-row fade-up">
+                <div class="service-image" style="--rotation: 2deg;">
+                    <div class="polaroid-frame" style="max-width: 450px;">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop"
+                            alt="Live Printing" style="aspect-ratio: 4/3;">
+                        <div
+                            style="font-family: var(--font-heading); font-style: italic; font-size: 1.2rem; text-align: center; margin-top: 15px; color:#000;">
+                            Studio Quality Prints</div>
+                    </div>
+                    <div class="service-price">Starting from $1,200</div>
+                </div>
+                <div class="service-content">
+                    <h3>Live Event Printing Station</h3>
+                    <p>Professional digital photography combined with lightning-fast dye-sublimation printers. Guests
+                        are photographed beautifully, and walk away with lab-quality 4x6 or 5x7 prints in under 30
+                        seconds.</p>
+                    <ul class="service-features">
+                        <li>Professional Photographer + Print Tech</li>
+                        <li>Studio lighting setup (backdrop optional)</li>
+                        <li>Unlimited 4x6" prints during service runtime</li>
+                        <li>Custom digital branding overlays on prints</li>
+                        <li>Live online gallery for digital downloads</li>
+                    </ul>
+                    <a href="booking.html" class="btn btn-outline">Book Live Station</a>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-row fade-up">
+                <div class="service-image" style="--rotation: -1deg;">
+                    <div class="polaroid-frame" style="max-width: 400px;">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop"
+                            alt="Insta Booth" style="aspect-ratio: 1/1;">
+                        <div
+                            style="font-family: var(--font-heading); font-style: italic; font-size: 1.2rem; text-align: center; margin-top: 15px; color:#000;">
+                            The Booth</div>
+                    </div>
+                    <div class="service-price">Starting from $900</div>
+                </div>
+                <div class="service-content">
+                    <h3>The Insta-Booth</h3>
+                    <p>A sleek, modern open-air photo booth designed for high-volume instant fun. Guests control the
+                        action with a touch screen, instantly printing classic photo strips or polaroid-style templates.
+                    </p>
+                    <ul class="service-features">
+                        <li>3 hours of booth operation</li>
+                        <li>Curated premium prop selection</li>
+                        <li>Unlimited instant printouts</li>
+                        <li>Boomerang & GIF creation</li>
+                        <li>SMS/Email instant sharing capabilities</li>
+                    </ul>
+                    <a href="booking.html" class="btn btn-primary">Reserve The Booth</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">LensCraft<span>.</span></a>
+                    <p>Tangible memories delivered before the night is over.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="services.html">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="booking.html">Book Session</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Get In Touch</h4>
+                    <p>hello@lenscraft.com</p>
+                    <p>+1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#">IG</a>
+                        <a href="#">FB</a>
+                        <a href="#">TW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 LensCraft Photography. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

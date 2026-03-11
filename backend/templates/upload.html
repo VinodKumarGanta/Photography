@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Photographer Portal - Vinod Photography</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d;
+            color: #f5f5f5;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .upload-box {
+            border: 2px dashed #d4af37;
+            padding: 50px;
+            display: inline-block;
+            margin-top: 30px;
+            border-radius: 10px;
+            background-color: #050505;
+        }
+
+        .btn {
+            background-color: #d4af37;
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #e5c358;
+        }
+
+        #qrResult {
+            margin-top: 50px;
+            display: none;
+        }
+
+        #qrImage {
+            max-width: 350px;
+            border: 15px solid white;
+            border-radius: 10px;
+        }
+
+        h1 span {
+            color: #d4af37;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Vinod Photography <span>Instant Print Station</span></h1>
+    <p>Upload a photo from the session to instantly generate a customer QR code.</p>
+
+    <div class="upload-box">
+        <form id="uploadForm">
+            <input type="file" id="photoInput" name="photo" accept="image/*" required
+                style="font-size: 1.1rem; padding: 10px;">
+            <br><br>
+            <button type="submit" class="btn">Upload & Generate QR</button>
+        </form>
+        <p id="loadingText" style="display:none; color: #d4af37; margin-top: 20px;">Processing image...</p>
+    </div>
+
+    <div id="qrResult">
+        <h2 style="color: #d4af37;">Show this QR Code to the Customer!</h2>
+        <p>They can scan it with their phone camera to instantly view and download their photo.</p>
+        <img id="qrImage" src="" alt="QR Code">
+        <br><br>
+        <p><a id="viewLink" href="#" target="_blank" style="color: #a0a0a0;">(Test Customer View Link)</a></p>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('photoInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const submitBtn = document.querySelector('.btn');
+            const loadingText = document.getElementById('loadingText');
+
+            submitBtn.disabled = true;
+            loadingText.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('qrImage').src = data.qr_url;
+                    document.getElementById('viewLink').href = data.view_url;
+                    document.getElementById('qrResult').style.display = 'block';
+                } else {
+                    alert('Upload failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error uploading:', error);
+                alert('Upload failed! Serve may be offline.');
+            } finally {
+                submitBtn.disabled = false;
+                loadingText.style.display = 'none';
+                fileInput.value = ''; // format input for next upload
+            }
+        });
+    </script>
+</body>
+
+</html>
