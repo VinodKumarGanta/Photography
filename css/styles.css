@@ -42,6 +42,45 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Glowing Ambient Orbs */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.15;
+    animation: float 20s infinite alternate cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+body::before {
+    background: var(--gold);
+    top: -200px;
+    left: -200px;
+}
+
+body::after {
+    background: #ffffff;
+    bottom: 20%;
+    right: -200px;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(100px, 150px) scale(1.1);
+    }
 }
 
 h1,
@@ -223,17 +262,19 @@ p {
 
 /* Polaroid Frame Aesthetics */
 .polaroid-frame {
-    background-color: #fff;
+    background-color: #fdfdfd;
     padding: 15px 15px 50px 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.03);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
     transform: rotate(var(--rotation, 0deg));
     display: inline-block;
-    color: #000;
+    color: #111;
+    border-radius: 2px;
 }
 
 .polaroid-frame:hover {
-    transform: scale(1.05) rotate(0deg);
+    transform: scale(1.08) rotate(0deg) translateY(-5px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(0, 0, 0, 0.02);
     z-index: 10;
     position: relative;
 }
@@ -601,15 +642,20 @@ p {
 }
 
 .service-card {
-    background-color: var(--bg-darker);
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     padding: 40px 30px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
     transition: var(--transition-smooth);
 }
 
 .service-card:hover {
-    border-color: var(--gold);
-    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.5);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
 }
 
 .service-icon {
