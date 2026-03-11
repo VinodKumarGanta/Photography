@@ -37,9 +37,11 @@ html {
 body {
     font-family: var(--font-body);
     background-color: var(--bg-color);
+    background: radial-gradient(circle at 50% 0%, #1a1a1a 0%, var(--bg-color) 40%, var(--bg-darker) 100%);
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
 h1,
@@ -153,11 +155,15 @@ p {
 .btn-primary {
     background-color: var(--gold);
     color: #000;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    transition: var(--transition-smooth);
 }
 
 .btn-primary:hover {
     background-color: var(--gold-hover);
     color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.7);
 }
 
 .btn-outline {
@@ -253,9 +259,9 @@ p {
 
 .navbar.scrolled {
     padding: 15px 0;
-    background: rgba(13, 13, 13, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-color);
+    background: rgba(13, 13, 13, 0.7);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .nav-container {
@@ -273,6 +279,7 @@ p {
 
 .logo span {
     color: var(--gold);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
 }
 
 .nav-links {

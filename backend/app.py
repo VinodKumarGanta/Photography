@@ -19,6 +19,8 @@ def index():
     # Simple upload interface for the photographer
     return render_template('upload.html')
 
+from PIL import Image, ExifTags
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'photo' not in request.files:
@@ -29,14 +31,47 @@ def upload_file():
         return jsonify({'error': 'No selected file'}), 400
     
     if file:
-        # Generate unique ID for this photo session
-        file_ext = os.path.splitext(file.filename)[1]
         photo_id = str(uuid.uuid4())
+        file_ext = '.jpg' # Force to jpg constraint for compression
         filename = f"{photo_id}{file_ext}"
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         
-        # Save original file
-        file.save(filepath)
+        try:
+            img = Image.open(file)
+            
+            # Handle orientation from EXIF
+            try:
+                for orientation in ExifTags.TAGS.keys():
+                    if ExifTags.TAGS[orientation]=='Orientation':
+                        break
+                exif = img._getexif()
+                if exif is not None:
+                    if exif[orientation] == 3:
+                        img=img.rotate(180, expand=True)
+                    elif exif[orientation] == 6:
+                        img=img.rotate(270, expand=True)
+                    elif exif[orientation] == 8:
+                        img=img.rotate(90, expand=True)
+            except (AttributeError, KeyError, IndexError):
+                pass
+            
+            # Resize image down for web efficiency
+            max_size = (1600, 1600)
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+            
+            # Convert to RGB to ensure jpg saving works
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+                
+            # Compress and save
+            img.save(filepath, 'JPEG', quality=85, optimize=True)
+        except Exception as e:
+            # Fallback to direct save
+            file_ext = os.path.splitext(file.filename)[1]
+            filename = f"{photo_id}{file_ext}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.seek(0)
+            file.save(filepath)
         
         # Store metadata
         photo_db[photo_id] = {

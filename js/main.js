@@ -1,5 +1,5 @@
 /**
- * Main JavaScript for LensCraft Photography
+ * Main JavaScript for Vinod Photography
  */
 
 document.addEventListener('DOMContentLoaded', () => {
